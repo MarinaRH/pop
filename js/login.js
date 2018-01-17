@@ -145,65 +145,140 @@
   
   
     // Login con Google
-    var provider = new firebase.auth.GoogleAuthProvider();
-    $('.btn-google').on('click', function() {
+    // var provider = new firebase.auth.GoogleAuthProvider();
+    // $('.btn-google').on('click', function() {
     //   event.preventDefault();
-      firebase.auth().signInWithPopup(provider).then(function(result) {
-        var token = result.credential.accessToken;
+    //   firebase.auth().signInWithPopup(provider).then(function(result) {
+    //     var token = result.credential.accessToken;
   
-        var user = result.user;
+    //     var user = result.user;
   
-        firebase.database().ref('users/' + user.uid).set({
-          name: user.displayName,
-          email: user.email,
-          uid: user.uid,
-          profilePhoto: user.photoURL,
-          posterPhoto: 'NONE'
-        }).then(
-          user => {
-            $(location).attr('href', '../home/index.html');
-          });
-      }).catch(function(error) {
+    //     firebase.database().ref('users/' + user.uid).set({
+    //       name: user.displayName,
+    //       email: user.email,
+    //       uid: user.uid,
+    //       profilePhoto: user.photoURL,
+    //       posterPhoto: 'NONE'
+    //     }).then(
+    //       user => {
+    //         $(location).attr('href', '../home/index.html');
+    //       });
+    //   }).catch(function(error) {
       // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
+        // var errorCode = error.code;
+        // var errorMessage = error.message;
         // The email of the user's account used.
-        var email = error.email;
+        // var email = error.email;
         // The firebase.auth.AuthCredential type that was used.
-        var credential = error.credential;
+        // var credential = error.credential;
       // ...
-      });
-    });
+    //   });
+    // });
   
-    var providerFacebook = new firebase.auth.FacebookAuthProvider();
-    $('.btn-facebook').on('click', function() {
+
+
+
+    function observer() {
+        firebase.auth().onAuthStateChanged(function(user) {
+          var $photoProfile = $('#photoProfile');
+          var $nameUsers = $('#nameUsers');
+          var $usersComent = $('.usersComent');
+          var $comentsPhoto = $('.comentsPhoto');
+  
+  
+        if (user) {
+          console.log('usuario activo');
+          var displayName = user.displayName;
+          localStorage.displayName = user.displayName;
+          var email = user.email;
+          console.log(email);
+          var emailVerified = user.emailVerified;
+          var photoURL = user.photoURL;
+          console.log(photoURL);
+  
+          localStorage.photoURL = user.photoURL;
+          var isAnonymous = user.isAnonymous;
+          var uid = user.uid;
+          var providerData = user.providerData;
+  
+          $photoProfile.attr('src', photoURL);
+          $comentsPhoto.attr('src', photoURL);
+          $nameUsers.text(displayName);
+          $usersComent.text(displayName);
+  
+        } else {
+          console.log('no existe usuario activo');
+        }
+      });
+    }
+    observer();
+  
+    var user = null;
+    var usuariosConectados = null;
+    var database = firebase.database();
+    var conectadoKey = '';
+    var $btnGoogle = $('.btn-google');
+  
+    $btnGoogle.on('click', logInGoogle);
+  
+    function logInGoogle() {
       event.preventDefault();
-      firebase.auth().signInWithPopup(providerFacebook).then(function(result) {
-        var token = result.credential.accessToken;
   
-        var user = result.user;
+      var provider = new firebase.auth.GoogleAuthProvider();
+      firebase.auth().signInWithPopup(provider).then(function(result) {
+        user = result.user;
+        console.log(user);
   
-        firebase.database().ref('users/' + user.uid).set({
-          name: user.displayName,
-          email: user.email,
-          uid: user.uid,
-          profilePhoto: user.photoURL,
-          posterPhoto: 'NONE'
-        }).then(
-          user => {
-            $(location).attr('href', '../home/index.html');
-          });
-      }).catch(function(error) {
-      // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // The email of the user's account used.
-        var email = error.email;
-        // The firebase.auth.AuthCredential type that was used.
-        var credential = error.credential;
-      // ...
+        observer();
+        initApp();
+  
+        window.location.href = '../home/index.html';
       });
-    });
+    }
+  
+  
+    function initApp() {
+      usuariosConectados = database.ref('/connected');
+      login(user.uid, user.displayName || user.email);
+    }
+  
+    function login(uid, name) {
+      var conectado = usuariosConectados.push({
+        uid: uid,
+        name: name
+      });
+      conectadoKey = conectado.key;
+      console.log(conectadoKey);
+    }
+    // var providerFacebook = new firebase.auth.FacebookAuthProvider();
+    // $('.btn-facebook').on('click', function() {
+    //   event.preventDefault();
+    //   firebase.auth().signInWithPopup(providerFacebook).then(function(result) {
+    //     var token = result.credential.accessToken;
+  
+    //     var user = result.user;
+  
+    //     firebase.database().ref('users/' + user.uid).set({
+    //       name: user.displayName,
+    //       email: user.email,
+    //       uid: user.uid,
+    //       profilePhoto: user.photoURL,
+    //       posterPhoto: 'NONE'
+    //     }).then(
+    //       user => {
+    //         $(location).attr('href', '../home/index.html');
+    //       });
+    //   }).catch(function(error) {
+    //   // Handle Errors here.
+    //     var errorCode = error.code;
+    //     var errorMessage = error.message;
+    //     // The email of the user's account used.
+    //     var email = error.email;
+    //     // The firebase.auth.AuthCredential type that was used.
+    //     var credential = error.credential;
+    //   // ...
+    //   });
+    // });
   
   
     $('.close').click(function() {
