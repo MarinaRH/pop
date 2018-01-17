@@ -12,7 +12,7 @@
 
     firebase.initializeApp(config);
    
-    $(document).ready(function() {
+  $(document).ready(function() {
     var passwordLogin = $('.password-login');
     var emailLogin = $('.email-login');
     var emailRegister = $('.email-register');
@@ -161,7 +161,7 @@
           posterPhoto: 'NONE'
         }).then(
           user => {
-            $(location).attr('href', 'home/index.html');
+            $(location).attr('href', '../home/index.html');
           });
       }).catch(function(error) {
       // Handle Errors here.
@@ -191,7 +191,7 @@
           posterPhoto: 'NONE'
         }).then(
           user => {
-            $(location).attr('href', 'home/index.html');
+            $(location).attr('href', '../home/index.html');
           });
       }).catch(function(error) {
       // Handle Errors here.
@@ -208,7 +208,7 @@
   
     $('.close').click(function() {
       firebase.auth().signOut().then(function() {
-        $(location).attr('href', 'login.html');
+        $(location).attr('href', '../login.html');
       }).catch(function(error) {
       // An error happened.
   
