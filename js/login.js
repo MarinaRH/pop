@@ -1,4 +1,4 @@
-$(document).ready(function() {
+
     
   // Initialize Firebase
   var config = {
@@ -12,7 +12,7 @@ $(document).ready(function() {
 
     firebase.initializeApp(config);
    
-  
+    $(document).ready(function() {
     var passwordLogin = $('.password-login');
     var emailLogin = $('.email-login');
     var emailRegister = $('.email-register');
@@ -147,7 +147,7 @@ $(document).ready(function() {
     // Login con Google
     var provider = new firebase.auth.GoogleAuthProvider();
     $('.btn-google').on('click', function() {
-      event.preventDefault();
+    //   event.preventDefault();
       firebase.auth().signInWithPopup(provider).then(function(result) {
         var token = result.credential.accessToken;
   
