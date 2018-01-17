@@ -109,8 +109,8 @@ $(document).ready(function() {
             name: userNew,
             email: user.email,
             uid: user.uid,
-            profilePhoto: 'https://firebasestorage.googleapis.com/v0/b/our-kids-47772.appspot.com/o/userdefault.png?alt=media&token=ff44fe35-e341-45e5-914c-05878f0d72dd',
-            posterPhoto: 'https://firebasestorage.googleapis.com/v0/b/our-kids-47772.appspot.com/o/portada.png?alt=media&token=bbdfc01f-73ee-40b5-b1ca-91347557e0bb'
+            // profilePhoto: 'https://firebasestorage.googleapis.com/v0/b/our-kids-47772.appspot.com/o/userdefault.png?alt=media&token=ff44fe35-e341-45e5-914c-05878f0d72dd',
+            // posterPhoto: 'https://firebasestorage.googleapis.com/v0/b/our-kids-47772.appspot.com/o/portada.png?alt=media&token=bbdfc01f-73ee-40b5-b1ca-91347557e0bb'
           }).then(user => {
             console.log('Usuario Registrado');
           });
@@ -120,11 +120,6 @@ $(document).ready(function() {
       });
     });
   
-  
-    // borrar
-   
-  
-    //
     // Autentificación por email y password
     
     $('.btn-login').click(function(event) {
